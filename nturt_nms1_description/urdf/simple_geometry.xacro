@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!-- urdf macro with inertial, visual and collision for simple geometries -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- default argument -->
+    <xacro:arg name="using_gazebo" default="false"/>
+
+    <!-- constant definition -->
+    <xacro:property name="triple_zero" value="0 0 0"/>
+
+    <!-- solid cuboid property macro -->
+    <xacro:macro name="solid_cuboid" params="name length width hight xyz:=${triple_zero} rpy:=${triple_zero} mass:=1 material:=White">
+        <link name="${name}">
+            <inertial>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <mass value="${mass}"/>
+                <inertia
+                    ixx="${1 / 12 * mass * (width ** 2 + hight ** 2)}"
+                    iyy="${1 / 12 * mass * (length ** 2 + hight ** 2)}"
+                    izz="${1 / 12 * mass * (length ** 2 + width ** 2)}"
+                    ixy="0.0"
+                    ixz="0.0"
+                    iyz="0.0"
+                />
+            </inertial>
+            <visual>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <box size="${length} ${width} ${hight}"/>
+                </geometry>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <box size="${length} ${width} ${hight}"/>
+                </geometry>
+            </collision>
+        </link>
+        <!-- attibutes specific to gazebo -->
+        <xacro:if value="$(arg using_gazebo)">
+            <gazebo reference="${name}">
+                <material>Gazebo/${material}</material>
+            </gazebo> 
+        </xacro:if>
+    </xacro:macro>
+
+    <!-- solid cylinder property macro -->
+    <xacro:macro name="solid_cylinder" params="name length radius xyz:=${triple_zero} rpy:=${triple_zero} mass:=1 material:=White">
+        <link name="${name}">
+            <inertial>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <mass value="${mass}"/>
+                <inertia
+                    ixx="${1 / 12 * mass * (3 * radius ** 2 + length ** 2)}"
+                    iyy="${1 / 12 * mass * (3 * radius ** 2 + length ** 2)}"
+                    izz="${1 / 2 * mass * radius ** 2}"
+                    ixy="0.0"
+                    ixz="0.0"
+                    iyz="0.0"
+                />
+            </inertial>
+            <visual>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <cylinder length="${length}" radius="${radius}"/>
+                </geometry>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <origin xyz="${xyz}" rpy="${rpy}"/>
+                <geometry>
+                    <cylinder length="${length}" radius="${radius}"/>
+                </geometry>
+            </collision>
+        </link>
+        <!-- attibutes specific to gazebo -->
+        <xacro:if value="$(arg using_gazebo)">
+            <gazebo reference="${name}">
+                <material>Gazebo/${material}</material>
+            </gazebo> 
+        </xacro:if>
+    </xacro:macro>
+
+    <!-- solid sphere property macro -->
+    <xacro:macro name="soild_sphere" params="name radius xyz:=${triple_zero} mass:=1 material:=White">
+        <link name="${name}">
+            <inertial>
+                <origin xyz="${xyz}" rpy="0 0 0"/>
+                <mass value="${mass}"/>
+                <inertia
+                    ixx="${2 / 5 * mass * radius ** 2}"
+                    iyy="${2 / 5 * mass * radius ** 2}"
+                    izz="${2 / 5 * mass * radius ** 2}"
+                    ixy="0.0"
+                    ixz="0.0"
+                    iyz="0.0"
+                />
+            </inertial>
+            <visual>
+                <origin xyz="${xyz}" rpy="0 0 0"/>
+                <geometry>
+                    <sphere radius="${radius}"/>
+                </geometry>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <sphere radius="${radius}"/>
+                </geometry>
+            </collision> 
+        </link>
+        <!-- attibutes specific to gazebo -->
+        <xacro:if value="$(arg using_gazebo)">
+            <gazebo reference="${name}">
+                <material>Gazebo/${material}</material>
+            </gazebo> 
+        </xacro:if>
+    </xacro:macro>
+</robot>

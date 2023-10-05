@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<robot name="nms1" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- include macro from other files-->
+    <xacro:include filename="$(find nturt_nms1_description)/urdf/lidar.xacro"/>
+    <xacro:include filename="$(find nturt_nms1_description)/urdf/material.xacro"/>
+    <xacro:include filename="$(find nturt_nms1_description)/urdf/ros2_control.xacro"/>
+    <xacro:include filename="$(find nturt_nms1_description)/urdf/simple_geometry.xacro"/>
+    
+    <!-- chassis macro -->
+    <xacro:macro name="chassis" params="name">
+        <xacro:solid_cuboid name="${name}" length="0.4" width="0.2" hight="0.10" mass="2" material="Blue"/>
+    </xacro:macro>
+    
+    <!-- wheel macro -->
+    <xacro:macro name="wheel" params="name">
+        <xacro:solid_cylinder name="${name}" length="0.05" radius="0.06" rpy="${radians(90)} 0 0" mass="0.05" material="Black"/>
+    </xacro:macro>
+
+    <!-- robot definition -->
+    <link name="base_link"/>
+    <link name="base_footprint"/>
+
+    <xacro:chassis name="chassis"/>
+    <xacro:lidar name="lidar"/>
+    <xacro:wheel name="front_left_wheel"/>
+    <xacro:wheel name="front_right_wheel"/>
+    <xacro:wheel name="rear_left_wheel"/>
+    <xacro:wheel name="rear_right_wheel"/>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0.0 0.0 -0.1" rpy="0 0 0"/>
+    </joint>
+    <joint name="base_link" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+    <joint name="lidar_joint" type="fixed">
+        <parent link="chassis"/>
+        <child link="lidar"/>
+        <origin xyz="0.15 0 0.05" rpy="0 0 0"/>
+    </joint>
+    <joint name="front_left_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="front_left_wheel"/>
+        <origin xyz="0.2 -0.15 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+    <joint name="front_right_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="front_right_wheel"/>
+        <origin xyz="0.2 0.15 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+    <joint name="rear_left_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="rear_left_wheel"/>
+        <origin xyz="-0.2 -0.15 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+    <joint name="rear_right_wheel_joint" type="continuous">
+        <parent link="chassis"/>
+        <child link="rear_right_wheel"/>
+        <origin xyz="-0.2 0.15 -0.04" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+    </joint>
+    <xacro:ros2_control/>
+</robot>
