@@ -30,7 +30,7 @@ def generate_launch_description():
     rviz_config_file = PathJoinSubstitution([
         robot_description_package,
         "config",
-        "urdf.rviz"
+        "visual.rviz"
     ])
     # convert xacro into urdf
     robot_description = Command([

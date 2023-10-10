@@ -5,25 +5,25 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /RobotModel1/Links1
+        - /RobotModel1
         - /TF1
       Splitter Ratio: 0.5
 Visualization Manager:
   Class: ""
   Displays:
-    - Class: rviz_default_plugins/Grid
-      Name: Grid
+    - Name: Grid
+      Class: rviz_default_plugins/Grid
       Cell Size: 1
       Enabled: true
-    - Class: rviz_default_plugins/RobotModel
-      Name: RobotModel 
+    - Name: RobotModel
+      Class: rviz_default_plugins/RobotModel
       Description Source: Topic
       Description Topic:
         Value: /robot_description
       Alpha: 0.7
       Enabled: true
-    - Class: rviz_default_plugins/TF
-      Name: TF
+    - Name: TF
+      Class: rviz_default_plugins/TF
       Marker Scale: 0.2
       Show Axes: true
       Show Arrows: true
@@ -42,12 +42,11 @@ Visualization Manager:
     - Class: rviz_default_plugins/Measure
   Views:
     Current:
+      Name: Current View
       Class: rviz_default_plugins/Orbit
-      Name: Current View
-      Distance: 1
-      Name: Current View
-      Pitch: 0.52359877559
       Value: Orbit (rviz)
+      Distance: 1
+      Pitch: 0.52359877559
       Yaw: 0.78539816339
     Saved: ~
 Window Geometry:

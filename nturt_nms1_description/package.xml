@@ -10,9 +10,10 @@
 
     <!-- build dependencies -->
     <buildtool_depend>ament_cmake</buildtool_depend>
+    <buildtool_depend>ament_cmake_python</buildtool_depend>
 
     <!-- execute dependencies -->
-    <exec_depend>joint_state_publisher_gui</exec_depend>
+    <exec_depend>rclpy</exec_depend>
     <exec_depend>robot_state_publisher</exec_depend>
     <exec_depend>ros2launch</exec_depend>
     <exec_depend>rviz2</exec_depend>
