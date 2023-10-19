@@ -4,11 +4,12 @@
     <xacro:arg name="using_gazebo" default="false"/>
 
     <!-- include macro from other files-->
+    <xacro:include filename="$(find nturt_nms1_description)/urdf/properties.xacro"/>
     <xacro:include filename="$(find nturt_nms1_description)/urdf/simple_geometry.xacro"/>
 
     <!-- lidar macro-->
     <xacro:macro name="lidar" params="name">
-        <xacro:solid_cylinder name="${name}" length="0.05" radius="0.05" xyz="0 0 0.025" mass="0.05" material="Red"/>
+        <xacro:solid_cylinder name="${name}" length="0.05" radius="0.05" xyz="0 0 0.025" mass="${lidar_mass}" material="Red"/>
         <xacro:if value="$(arg using_gazebo)">
             <gazebo reference="${name}">
                 <sensor name="lidar" type="ray">

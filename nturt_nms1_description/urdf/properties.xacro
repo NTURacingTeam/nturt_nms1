@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- default argument -->
+    <xacro:arg name="properties_file" default="$(find nturt_nms1_description)/config/properties.yaml"/>
+
+    <xacro:property name="properties" value="${xacro.load_yaml('$(arg properties_file)')}"/>
+    
+    <!-- geometry -->
+    <xacro:property name="chassis_length" value="${properties['nms1']['wheel_base']}"/>
+    <xacro:property name="chassis_width" value="${0.8 * (properties['nms1']['wheel_track'] - properties['nms1']['wheel_width'])}"/>
+    <xacro:property name="chassis_height" value="${properties['nms1']['height']}"/>
+    <xacro:property name="chassis_vertical_offset" value="${properties['nms1']['height']}"/>
+
+    <xacro:property name="wheel_radius" value="${properties['nms1']['wheel_radius']}"/>
+    <xacro:property name="wheel_width" value="${properties['nms1']['wheel_width']}"/>
+    <xacro:property name="wheel_longitudinal_offset" value="${0.5 * properties['nms1']['wheel_base']}"/>
+    <xacro:property name="wheel_lateral_offset" value="${0.5 * properties['nms1']['wheel_track']}"/>
+    <xacro:property name="wheel_vertical_offset" value="${properties['nms1']['height'] - properties['nms1']['wheel_radius']}"/>
+
+    <xacro:property name="lidar_longitudinal_offset" value="${properties['nms1']['lidar_offset']}"/>
+    <xacro:property name="lidar_vertical_offset" value="${0.5 * properties['nms1']['height']}"/>
+
+    <!-- mass -->
+    <xacro:property name="chassis_mass" value="${0.8 * properties['nms1']['mass']}"/>
+    <xacro:property name="wheel_mass" value="${0.02 * properties['nms1']['mass']}"/>
+    <xacro:property name="lidar_mass" value="${0.12 * properties['nms1']['mass']}"/>
+
+    <!-- miscellaneous -->
+    <xacro:property name="steering_limit" value="${radians(properties['nms1']['steering_limit'])}"/>
+    <xacro:property name="max_speed" value="${properties['nms1']['max_speed']}"/>
+</robot>

@@ -1,0 +1,28 @@
+f1tenth_gym_ros_bridge:
+  ros__parameters:
+    tf_ns: <modified when launch>
+    map_frame: <modified when launch>
+
+    map: <modified when launch>
+    # starting pose on map
+    sx: 0.0
+    sy: 0.0
+    stheta: 0.0
+
+    # lidar
+    scan_fov: 4.7
+    scan_beams: 1080
+
+    # teleop
+    using_teleop: True
+
+map_server:
+  ros__parameters:
+    yaml_filename: <modified when launch>
+    topic: map
+    frame_id: <modified when launch>
+
+lifecycle_manager:
+  ros__parameters:
+    node_names: [map_server]
+    autostart: true

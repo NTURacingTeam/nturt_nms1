@@ -2,26 +2,35 @@
 <robot name="nms1" xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- default argument -->
     <xacro:arg name="using_gazebo" default="false"/>
+    <xacro:arg name="using_fake_hardware" default="false"/>
 
-    <!-- wheel control config macro -->
-    <xacro:macro name="wheel_control_config" params="wheel_name">
-        <joint name="${wheel_name}">
-            <command_interface name="position"/>
-            <command_interface name="velocity">
-                <param name="min">-1</param>
-                <param name="max">1</param>
-            </command_interface>
-            <command_interface name="acceleration">
-                <param name="min">-10</param>
-                <param name="max">10</param>
+    <!-- include macro from other files-->
+    <xacro:include filename="$(find nturt_nms1_description)/urdf/properties.xacro"/>
+
+    <!-- steering_wheel_control_config macro -->
+    <xacro:macro name="steering_wheel_control_config" params="name">
+        <joint name="${name}">
+            <command_interface name="position">
+                <param name="min">-${steering_limit}</param>
+                <param name="max">${steering_limit}</param>
             </command_interface>
             <state_interface name="position"/>
-            <state_interface name="velocity"/>
-            <state_interface name="acceleration"/>
         </joint>
     </xacro:macro>
 
-    <!-- nms1 ros2_control macro -->
+    <!-- drive_wheel_control_config macro -->
+    <xacro:macro name="drive_wheel_control_config" params="name">
+        <joint name="${name}">
+            <command_interface name="velocity">
+                <param name="min">-${max_speed}</param>
+                <param name="max">${max_speed}</param>
+            </command_interface>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </xacro:macro>
+
+    <!-- ros2_control macro -->
     <xacro:macro name="ros2_control">
         <ros2_control name="car_control_system" type="system">
             <xacro:if value="$(arg using_gazebo)">
@@ -30,11 +39,18 @@
                 </hardware>
             </xacro:if>
             <xacro:unless value="$(arg using_gazebo)">
+                <xacro:if value="$(arg using_fake_hardware)">
+                    <hardware>
+                        <plugin>mock_components/GenericSystem</plugin>
+                    </hardware>
+                </xacro:if>
+                <xacro:unless value="$(arg using_fake_hardware)">
+                </xacro:unless>
             </xacro:unless>
-            <xacro:wheel_control_config wheel_name="front_left_wheel_joint"/>
-            <xacro:wheel_control_config wheel_name="front_right_wheel_joint"/>
-            <xacro:wheel_control_config wheel_name="rear_left_wheel_joint"/>
-            <xacro:wheel_control_config wheel_name="rear_right_wheel_joint"/>
+            <xacro:steering_wheel_control_config name="front_left_wheel_steering_joint"/>
+            <xacro:steering_wheel_control_config name="front_right_wheel_steering_joint"/>
+            <xacro:drive_wheel_control_config name="rear_left_wheel_drive_joint"/>
+            <xacro:drive_wheel_control_config name="rear_right_wheel_drive_joint"/>
         </ros2_control>
         <xacro:if value="$(arg using_gazebo)">
             <gazebo>

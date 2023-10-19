@@ -7,15 +7,15 @@
     <!-- constant definition -->
     <xacro:property name="triple_zero" value="0 0 0"/>
 
-    <!-- solid cuboid property macro -->
-    <xacro:macro name="solid_cuboid" params="name length width hight xyz:=${triple_zero} rpy:=${triple_zero} mass:=1 material:=White">
+    <!-- solid_cuboid macro -->
+    <xacro:macro name="solid_cuboid" params="name length width height xyz:=${triple_zero} rpy:=${triple_zero} mass:=1 material:=White">
         <link name="${name}">
             <inertial>
                 <origin xyz="${xyz}" rpy="${rpy}"/>
                 <mass value="${mass}"/>
                 <inertia
-                    ixx="${1 / 12 * mass * (width ** 2 + hight ** 2)}"
-                    iyy="${1 / 12 * mass * (length ** 2 + hight ** 2)}"
+                    ixx="${1 / 12 * mass * (width ** 2 + height ** 2)}"
+                    iyy="${1 / 12 * mass * (length ** 2 + height ** 2)}"
                     izz="${1 / 12 * mass * (length ** 2 + width ** 2)}"
                     ixy="0.0"
                     ixz="0.0"
@@ -25,14 +25,14 @@
             <visual>
                 <origin xyz="${xyz}" rpy="${rpy}"/>
                 <geometry>
-                    <box size="${length} ${width} ${hight}"/>
+                    <box size="${length} ${width} ${height}"/>
                 </geometry>
                 <material name="${material}"/>
             </visual>
             <collision>
                 <origin xyz="${xyz}" rpy="${rpy}"/>
                 <geometry>
-                    <box size="${length} ${width} ${hight}"/>
+                    <box size="${length} ${width} ${height}"/>
                 </geometry>
             </collision>
         </link>
@@ -44,7 +44,7 @@
         </xacro:if>
     </xacro:macro>
 
-    <!-- solid cylinder property macro -->
+    <!-- solid_cylinder macro -->
     <xacro:macro name="solid_cylinder" params="name length radius xyz:=${triple_zero} rpy:=${triple_zero} mass:=1 material:=White">
         <link name="${name}">
             <inertial>
@@ -81,7 +81,7 @@
         </xacro:if>
     </xacro:macro>
 
-    <!-- solid sphere property macro -->
+    <!-- solid_sphere macro -->
     <xacro:macro name="soild_sphere" params="name radius xyz:=${triple_zero} mass:=1 material:=White">
         <link name="${name}">
             <inertial>

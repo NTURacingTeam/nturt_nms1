@@ -20,7 +20,7 @@ Visualization Manager:
       Description Source: Topic
       Description Topic:
         Value: robot_description
-      Alpha: 0.7
+      Alpha: 1
       Enabled: true
     - Name: Map
       Class: rviz_default_plugins/Map
@@ -47,7 +47,7 @@ Visualization Manager:
       Enabled: true
   Enabled: true
   Global Options:
-    Fixed Frame: /nms1_sim/map
+    Fixed Frame: <fixed_frame>
     Frame Rate: 30
   Name: root
   Tools:
@@ -63,11 +63,10 @@ Visualization Manager:
   Views:
     Current:
       Name: Current View
-      Class: rviz_default_plugins/Orbit
-      Value: Orbit (rviz)
-      Distance: 10
-      Pitch: 0.5353981852531433
-      Yaw: 3.1453983783721924
+      Class: rviz_default_plugins/TopDownOrtho
+      Value: TopDownOrtho (rviz_default_plugins)
+      Angle: -1.5708
+      Scale: 20
     Saved: ~
 Window Geometry:
   Height: 800

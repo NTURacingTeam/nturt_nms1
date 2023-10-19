@@ -25,15 +25,16 @@ class F1tenthGymRosBridge(Node):
     def __init__(self):
         super().__init__("f1tenth_gym_ros_bridge")
 
-        self.declare_parameter("namespace", "f1tenth")
         self.declare_parameter("drive_topic", "drive")
-        self.declare_parameter("joint_states_topic", "joint_states")
         self.declare_parameter("odom_topic", "odom")
         self.declare_parameter("scan_topic", "scan")
+
+        self.declare_parameter("tf_ns", "f1tenth")
         self.declare_parameter("map_frame", "map")
+
         self.declare_parameter(
             "map",
-            os.path.join(get_package_share_directory("nturt_nms1_bringup"),
+            os.path.join(get_package_share_directory("nturt_nms1_sim"),
                          "maps", "levine.png"))
         self.declare_parameter("using_teleop", True)
 
@@ -43,12 +44,15 @@ class F1tenthGymRosBridge(Node):
         self.declare_parameter("scan_fov", 4.7)
         self.declare_parameter("scan_beams", 1080)
 
-        self.namespace = self.get_parameter("namespace").value
-        scan_topic = self.get_parameter("scan_topic").value
         drive_topic = self.get_parameter("drive_topic").value
-        joint_states_topic = self.get_parameter("joint_states_topic").value
         odom_topic = self.get_parameter("odom_topic").value
+        scan_topic = self.get_parameter("scan_topic").value
+
+        self.tf_ns = self.get_parameter("tf_ns").value
+        if self.tf_ns != "":
+            self.tf_ns = self.tf_ns + "/"
         self.map_frame = self.get_parameter("map_frame").value
+
         map = self.get_parameter("map").value
         using_teleop = self.get_parameter("using_teleop").value
 
@@ -65,7 +69,7 @@ class F1tenthGymRosBridge(Node):
 
         self.angle_min = -scan_fov / 2.0
         self.angle_max = scan_fov / 2.0
-        self.angle_inc = scan_fov / scan_beams
+        self.angle_inc = scan_fov / (scan_beams - 1)
 
         # env backend
         self.env = gym.make("f110_gym:f110-v0",
@@ -81,7 +85,7 @@ class F1tenthGymRosBridge(Node):
 
         # publishers
         self.joint_states_pub = self.create_publisher(JointState,
-                                                      joint_states_topic, 10)
+                                                      "joint_states", 10)
         self.odom_pub = self.create_publisher(Odometry, odom_topic, 10)
         self.scan_pub = self.create_publisher(LaserScan, scan_topic, 10)
 
@@ -140,14 +144,14 @@ class F1tenthGymRosBridge(Node):
 
         # publish scan
         scan = LaserScan()
-        scan.header.frame_id = self.namespace + "/lidar"
+        scan.header.frame_id = self.tf_ns + "laser"
         scan.header.stamp = t
 
         scan.angle_min = self.angle_min
         scan.angle_max = self.angle_max
         scan.angle_increment = self.angle_inc
-        scan.range_min = 0.
-        scan.range_max = 30.
+        scan.range_min = 0.0
+        scan.range_max = 30.0
         scan.ranges = self.scan
         self.scan_pub.publish(scan)
 
@@ -160,12 +164,12 @@ class F1tenthGymRosBridge(Node):
         js.header.stamp = t
 
         js.name = [
-            self.namespace + "/front_left_wheel_steering_joint",
-            self.namespace + "/front_right_wheel_steering_joint",
-            self.namespace + "/front_left_wheel_drive_joint",
-            self.namespace + "/front_right_wheel_drive_joint",
-            self.namespace + "/rear_left_wheel_drive_joint",
-            self.namespace + "/rear_right_wheel_drive_joint",
+            self.tf_ns + "front_left_wheel_steering_joint",
+            self.tf_ns + "front_right_wheel_steering_joint",
+            self.tf_ns + "front_left_wheel_drive_joint",
+            self.tf_ns + "front_right_wheel_drive_joint",
+            self.tf_ns + "rear_left_wheel_drive_joint",
+            self.tf_ns + "rear_right_wheel_drive_joint",
         ]
 
         js.position = 6 * [0.0]
@@ -176,10 +180,10 @@ class F1tenthGymRosBridge(Node):
 
     def _publish_odom(self, t):
         odom = Odometry()
-        odom.header.frame_id = self.namespace + "/" + self.map_frame
+        odom.header.frame_id = self.tf_ns + self.map_frame
         odom.header.stamp = t
 
-        odom.child_frame_id = self.namespace + "/base_link"
+        odom.child_frame_id = self.tf_ns + "base_link"
 
         odom.pose.pose.position.x = self.pose[0]
         odom.pose.pose.position.y = self.pose[1]
@@ -199,10 +203,10 @@ class F1tenthGymRosBridge(Node):
 
     def _publish_transforms(self, t):
         tf = TransformStamped()
-        tf.header.frame_id = self.namespace + "/" + self.map_frame
+        tf.header.frame_id = self.map_frame
         tf.header.stamp = t
 
-        tf.child_frame_id = self.namespace + "/base_link"
+        tf.child_frame_id = self.tf_ns + "base_link"
 
         tf.transform.translation.x = self.pose[0]
         tf.transform.translation.y = self.pose[1]

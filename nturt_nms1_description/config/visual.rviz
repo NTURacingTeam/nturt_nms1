@@ -30,7 +30,7 @@ Visualization Manager:
       Show Names: true
       Enabled: true
   Global Options:
-    Fixed Frame: base_footprint
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:

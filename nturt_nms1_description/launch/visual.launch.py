@@ -13,7 +13,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "using_gazebo",
             default_value="false",
-            description="Arguement to determine wether to parse nms1 model with gazebo.",
+            description="Wether to parse nms1 model with gazebo.",
         )
     )
 
@@ -33,16 +33,14 @@ def generate_launch_description():
         "visual.rviz"
     ])
     # convert xacro into urdf
-    robot_description = Command([
-        PathJoinSubstitution([
-            FindExecutable(name="xacro")
-        ]),
+    robot_description = Command((
+        "xacro",
         " ",
         robot_description_file,
         " ",
         "using_gazebo:=",
         using_gazebo,
-    ])
+    ))
 
     # declare nodes
     joint_state_publisher_gui_node = Node(

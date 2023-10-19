@@ -14,7 +14,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "using_gazebo",
             default_value="true",
-            description="Arguement to determine wether to parse nms1 model with gazebo.",
+            description="Wether to parse nms1 model with gazebo.",
         )
     )
 

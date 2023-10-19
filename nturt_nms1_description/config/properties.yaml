@@ -1,0 +1,15 @@
+nms1:
+  # dimensions in meters
+  wheel_radius: 0.06
+  wheel_width: 0.05
+  wheel_base: 0.4
+  wheel_track: 0.3
+  height: 0.1 # center of mass height
+  lidar_offset: 0.15 # longitudinal lidar offset from center of mass
+
+  # inertials in kg
+  mass: 3.0
+
+  # miscellaneous
+  steering_limit: 30.0 # degrees
+  max_speed: 1.0 # m/s
