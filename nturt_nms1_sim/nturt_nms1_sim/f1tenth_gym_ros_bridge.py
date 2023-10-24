@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # modified from https://github.com/f1tenth/f1tenth_gym_ros/blob/main/f1tenth_gym_ros/gym_bridge.py
 
 import gym

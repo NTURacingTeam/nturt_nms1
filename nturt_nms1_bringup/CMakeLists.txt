@@ -8,23 +8,45 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(rclpy REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(tf2_msgs REQUIRED)
 
-add_executable(ackermann_steering_controller_remapper_node
-        app/ackermann_steering_controller_remapper_node.cpp
+include_directories(
+        include
 )
-ament_target_dependencies(ackermann_steering_controller_remapper_node
+
+# libraries
+# library: nms1_bringup_remapper
+add_library(nms1_bringup_remapper SHARED
+        src/nms1_bringup_remapper.cpp
+)
+ament_target_dependencies(nms1_bringup_remapper
+        geometry_msgs
         rclcpp
+        rclcpp_components
         tf2_msgs
 )
+# register to node components
+# node component: Nms1BringupRemapper
+rclcpp_components_register_nodes(nms1_bringup_remapper "Nms1BringupRemapper")
+set(node_plugins "${node_plugins}Nms1BringupRemapper;$<TARGET_FILE:nms1_bringup_remapper>\n")
 
-# install python module for this package
-ament_python_install_package(${PROJECT_NAME})
+# executables
+# application: nms1_bringup_remapper_node
+add_executable(nms1_bringup_remapper_node
+        app/nms1_bringup_remapper_node.cpp
+)
+target_link_libraries(nms1_bringup_remapper_node
+        nms1_bringup_remapper
+)
+ament_target_dependencies(nms1_bringup_remapper_node
+        rclcpp
+)
 
 # install applications executables
-install(TARGETS ackermann_steering_controller_remapper_node
+install(TARGETS nms1_bringup_remapper_node
         DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -48,8 +70,9 @@ endif()
 # export package dependencies
 ament_export_dependencies(
         ament_cmake
-        ament_cmake_python
+        geometry_msgs
         rclcpp
+        rclcpp_components
         tf2_msgs
 )
 

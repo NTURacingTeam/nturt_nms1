@@ -3,17 +3,15 @@
 <package format="3">
     <name>nturt_nms1_description</name>
     <version>0.0.0</version>
-    <description>Package for robot description of nano model simplification, mark 1.</description>
+    <description>ROS2 package with robot description for nano model simplification, mark 1.</description>
     <maintainer email="jet22854111@gmail.com">Quantumspawner</maintainer>
     <author email="jet22854111@gmail.com">Quantumspawner</author>
     <license>TODO</license>
 
     <!-- build dependencies -->
     <buildtool_depend>ament_cmake</buildtool_depend>
-    <buildtool_depend>ament_cmake_python</buildtool_depend>
 
     <!-- execute dependencies -->
-    <exec_depend>rclpy</exec_depend>
     <exec_depend>robot_state_publisher</exec_depend>
     <exec_depend>ros2launch</exec_depend>
     <exec_depend>rviz2</exec_depend>

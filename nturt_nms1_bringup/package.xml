@@ -3,7 +3,7 @@
 <package format="3">
     <name>nturt_nms1_bringup</name>
     <version>0.0.0</version>
-    <description>Package with control launch and config files for nano model simplification, mark 1.</description>
+    <description>ROS2 package with control launch and config files for nano model simplification, mark 1.</description>
     <maintainer email="jet22854111@gmail.com">Quantumspawner</maintainer>
     <author email="jet22854111@gmail.com">Quantumspawner</author>
     <license>TODO</license>
@@ -12,29 +12,21 @@
     <buildtool_depend>ament_cmake</buildtool_depend>
 
     <!-- general dependencies-->
+    <depend>geometry_msgs</depend>
     <depend>rclcpp</depend>
+    <depend>rclcpp_components</depend>
     <depend>tf2_msgs</depend>
 
     <!-- execute dependencies -->
-    <exec_depend>ackermann_msgs</exec_depend>
-    <exec_depend>geometry_msgs</exec_depend>
     <exec_depend>joint_state_broadcaster</exec_depend>
-    <exec_depend>nav_msgs</exec_depend>
-    <exec_depend>nav2_lifecycle_manager</exec_depend>
-    <exec_depend>nav2_map_server</exec_depend>
     <exec_depend>nturt_nms1_description</exec_depend>
+    <exec_depend>nturt_nms1_sim</exec_depend>
     <exec_depend>robot_state_publisher</exec_depend>
     <exec_depend>ros2launch</exec_depend>
     <exec_depend>ros2_control</exec_depend>
     <exec_depend>ros2_controllers</exec_depend>
-    <exec_depend>rviz2</exec_depend>
-    <exec_depend>sensor_msgs</exec_depend>
-    <exec_depend>tf2_ros</exec_depend>
     <exec_depend>urdf</exec_depend>
     <exec_depend>xacro</exec_depend>
-
-    <!-- python dependencies -->
-    <exec_depend>python-transforms3d-pip</exec_depend>
 
     <export>
         <build_type>ament_cmake</build_type>

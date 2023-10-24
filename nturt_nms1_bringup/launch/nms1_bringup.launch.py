@@ -3,10 +3,9 @@ from launch.actions import DeclareLaunchArgument, RegisterEventHandler
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution, PythonExpression
 
-from launch_ros.actions import Node, SetRemap
-from launch_ros.descriptions import ParameterFile
+from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from nav2_common.launch import ReplaceString, RewrittenYaml
+from nav2_common.launch import ReplaceString
 
 
 def generate_launch_description():
@@ -51,6 +50,11 @@ def generate_launch_description():
         "config",
         "nms1_controllers.yaml"
     ])
+    rviz_config_file = PathJoinSubstitution([
+        FindPackageShare("nturt_nms1_bringup"),
+        "config",
+        "nms1_bringup.rviz"
+    ])
     # convert xacro into urdf
     robot_description = Command((
         "xacro",
@@ -64,18 +68,16 @@ def generate_launch_description():
         using_fake_hardware,
     ))
     # modify controllers file according to arguments
-    namespaced_controllers_file = ParameterFile(
-        RewrittenYaml(
-            source_file=controllers_file,
-            root_key=ros_ns,
-            param_rewrites={},
-            convert_types=True
-        ),
-        allow_substs=True,
+    fixed_controllers_file = ReplaceString(
+        source_file=controllers_file,
+        replacements={
+            "<namespace>": ros_ns,
+            "<tf_prefix>": tf_prefix,
+        },
     )
     # modify rviz config file according to arguments
-    fixed_controllers_file = ReplaceString(
-        source_file=namespaced_controllers_file,
+    fixed_rviz_config_file = ReplaceString(
+        source_file=rviz_config_file,
         replacements={
             "<tf_prefix>": tf_prefix,
         },
@@ -127,8 +129,15 @@ def generate_launch_description():
         package="rviz2",
         executable="rviz2",
         name="rviz2",
+        namespace=ros_ns,
         output="both",
-        arguments=["-d", rviz_config_file],
+        arguments=["-d", fixed_rviz_config_file],
+    )
+    remapper_node = Node(
+        package="nturt_nms1_bringup",
+        executable="nms1_bringup_remapper_node",
+        namespace=ros_ns,
+        output="both",
     )
     delay_after_joint_state_broadcaster_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
@@ -145,6 +154,7 @@ def generate_launch_description():
         controller_manager_node,
         joint_state_broadcaster_spawner,
         delay_after_joint_state_broadcaster_spawner,
+        remapper_node,
     ]
 
     return LaunchDescription(arguments + nodes)

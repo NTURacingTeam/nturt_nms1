@@ -1,0 +1,8 @@
+<!-- For pluginlib export definition -->
+<library path="nms1_hardware">
+    <class name="nms1_hardware/Nms1Hardware"
+        type="nms1_hardware::Nms1Hardware"
+        base_class_type="hardware_interface::SystemInterface">
+        <description>Hardware interface for nano model simplification, mark 1.</description>
+    </class>
+</library>
