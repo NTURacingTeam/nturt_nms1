@@ -1,8 +1,0 @@
-slam_toolbox:
-  ros__parameters:
-    scan_topic: <modified when launch>
-    map_name: map # the topic that map will be published
-
-    map_frame: map
-    odom_frame: <modified when launch>
-    base_frame: <modified when launch>

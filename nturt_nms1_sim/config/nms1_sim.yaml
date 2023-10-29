@@ -24,5 +24,6 @@ map_server:
 
 lifecycle_manager:
   ros__parameters:
-    node_names: [map_server]
     autostart: true
+    node_names:
+      - map_server

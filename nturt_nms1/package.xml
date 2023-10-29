@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+    <name>nturt_nms1</name>
+    <version>0.0.0</version>
+    <description>ROS2 metapackage for nano model simplification, mark 1.</description>
+    <maintainer email="jet22854111@gmail.com">QuantumSpawner</maintainer>
+    <author email="jet22854111@gmail.com">QuantumSpawner</author>
+    <license>TODO</license>
+
+    <!-- buile dependencies -->
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <!-- execute dependencies -->
+    <exec_depend>nturt_nms1_bringup</exec_depend>
+    <exec_depend>nturt_nms1_description</exec_depend>
+    <exec_depend>nturt_nms1_hardware</exec_depend>
+    <exec_depend>nturt_nms1_nav</exec_depend>
+    <exec_depend>nturt_nms1_sim</exec_depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+</package>

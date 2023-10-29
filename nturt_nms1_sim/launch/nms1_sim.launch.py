@@ -49,7 +49,7 @@ def generate_launch_description():
             default_value=PathJoinSubstitution([
                     FindPackageShare("nturt_nms1_sim"),
                     "maps",
-                    "levine"
+                    "spielberg"
                 ]),
             description="The map to use in the simulation, without file extension.",
         )

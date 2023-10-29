@@ -1,5 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler
+from launch.conditions import IfCondition
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution, PythonExpression
 
@@ -27,7 +28,14 @@ def generate_launch_description():
     )
     arguments.append(
         DeclareLaunchArgument(
-            "using_fake_hardware",
+            "use_rviz",
+            default_value="false",
+            description="Wether to visualize in rviz2.",
+        )
+    )
+    arguments.append(
+        DeclareLaunchArgument(
+            "fake_hardware",
             default_value="true",
             description="Wether to use fake hardware.",
         )
@@ -36,7 +44,8 @@ def generate_launch_description():
     # initialize arguments
     ros_ns = LaunchConfiguration("nms1_ros_ns")
     tf_ns = LaunchConfiguration("tf_ns")
-    using_fake_hardware =  LaunchConfiguration("using_fake_hardware")
+    use_rviz = LaunchConfiguration("use_rviz")
+    fake_hardware =  LaunchConfiguration("fake_hardware")
 
     # variables
     tf_prefix = PythonExpression(["'", tf_ns, "' + '/' if '", tf_ns, "' != '' else ''"])
@@ -64,8 +73,8 @@ def generate_launch_description():
         "namespace:=",
         tf_ns,
         " ",
-        "using_fake_hardware:=",
-        using_fake_hardware,
+        "fake_hardware:=",
+        fake_hardware,
     ))
     # modify controllers file according to arguments
     fixed_controllers_file = ReplaceString(
@@ -132,6 +141,7 @@ def generate_launch_description():
         namespace=ros_ns,
         output="both",
         arguments=["-d", fixed_rviz_config_file],
+        condition=IfCondition(use_rviz),
     )
     remapper_node = Node(
         package="nturt_nms1_bringup",
