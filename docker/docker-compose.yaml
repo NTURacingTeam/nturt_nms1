@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  ros:
+    image: nturacing/nturt_ros:jetson-devel
+    container_name: nms1
+    hostname: jetson-devel
+    group_add:
+      - dialout
+      - gpio
+      - sudo
+      - video
+    environment:
+      DISPLAY: :0
+      QT_X11_NO_MITSHM: 1
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /dev:/dev
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ..:/home/docker/ws/src
+    tmpfs:
+      - /tmp
+    tty: true
+    stdin_open: true
+    privileged: true

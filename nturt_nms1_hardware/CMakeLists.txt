@@ -14,6 +14,8 @@ find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 
+find_package(JetsonGPIO REQUIRED)
+
 include_directories(
         include
 )
@@ -22,6 +24,9 @@ include_directories(
 # library: nturt_nms1_hardware
 add_library(${PROJECT_NAME} SHARED
         src/nms1_hardware.cpp
+)
+target_link_libraries(${PROJECT_NAME}
+        JetsonGPIO::JetsonGPIO
 )
 ament_target_dependencies(${PROJECT_NAME}
         hardware_interface

@@ -15,6 +15,7 @@
                 <param name="max">${steering_limit}</param>
             </command_interface>
             <state_interface name="position"/>
+            <param name="type">steering</param>
         </joint>
     </xacro:macro>
 
@@ -25,28 +26,28 @@
                 <param name="min">-${max_speed}</param>
                 <param name="max">${max_speed}</param>
             </command_interface>
-            <state_interface name="position"/>
             <state_interface name="velocity"/>
+            <param name="type">drive</param>
         </joint>
     </xacro:macro>
 
     <!-- ros2_control macro -->
     <xacro:macro name="ros2_control">
         <ros2_control name="car_control_system" type="system">
-            <xacro:if value="$(arg using_gazebo)">
-                <hardware>
+            <hardware>
+                <xacro:if value="$(arg using_gazebo)">
                     <plugin>gazebo_ros2_control/GazeboSystem</plugin>
-                </hardware>
-            </xacro:if>
-            <xacro:unless value="$(arg using_gazebo)">
-                <xacro:if value="$(arg using_fake_hardware)">
-                    <hardware>
-                        <plugin>mock_components/GenericSystem</plugin>
-                    </hardware>
                 </xacro:if>
-                <xacro:unless value="$(arg using_fake_hardware)">
+                <xacro:unless value="$(arg using_gazebo)">
+                    <xacro:if value="$(arg using_fake_hardware)">
+                        <plugin>mock_components/GenericSystem</plugin>
+                    </xacro:if>
+                    <xacro:unless value="$(arg using_fake_hardware)">
+                        <plugin>nms1_hardware/Nms1Hardware</plugin>
+                        <param name="namespace">nms1</param>
+                    </xacro:unless>
                 </xacro:unless>
-            </xacro:unless>
+            </hardware>
             <xacro:steering_wheel_control_config name="front_left_wheel_steering_joint"/>
             <xacro:steering_wheel_control_config name="front_right_wheel_steering_joint"/>
             <xacro:drive_wheel_control_config name="rear_left_wheel_drive_joint"/>

@@ -96,13 +96,19 @@ Visualization Manager:
           Line Style: Billboards
           Line Width: 0.03
           Color: 0; 12; 255
-          Enabled: true
+          Enabled: false
 
     - Name: Robot Footprint
       Class: rviz_default_plugins/Polygon
       Topic:
         Value: local_costmap/published_footprint
         Durability Policy: Transient Local
+      Enabled: true
+
+    - Name: Robot Trajectory
+      Class: rviz_default_plugins/MarkerArray
+      Topic:
+        Value: slam_toolbox/graph_visualization
       Enabled: true
 
   Enabled: true
